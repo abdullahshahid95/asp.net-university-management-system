@@ -1,0 +1,55 @@
+﻿@model UMS.Models.Section
+@{
+    ViewBag.Title = "Section";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@{
+    var submit = "";
+    if (ViewBag.flag == 1)
+    {
+        submit = "Save";
+    }
+    else
+    {
+        submit = "Next";
+    }
+}
+<h2>Section</h2>
+@using (Html.BeginForm("SaveSection", "Students"))
+{
+    <div class="form-group">
+        @Html.LabelFor(m => m.Name)
+        @Html.TextBoxFor(m => m.Name, new { @Value = ViewBag.section, @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Name)
+    </div>
+        @Html.HiddenFor(m => m.StudentId, new { @Value = ViewBag.studentId })
+        @Html.HiddenFor(m => m.Id, new { @Value = ViewBag.sectionId })
+
+    <button type="submit" class="btn btn-primary">@submit</button>
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@*<form id="newStudentCourse">
+        <div class="form-group">
+            <label>Section</label>
+            <input id="section" name="section" data-rule-validSection="true" required type="text" value=@ViewBag.section class="form-control" />
+        </div>
+        <div class="form-group">
+            <label>Courses</label>
+            <input id="section" name="section" data-rule-validSection="true" required type="text" value=@ViewBag.section class="form-control" />
+        </div>
+    </form>*@
+

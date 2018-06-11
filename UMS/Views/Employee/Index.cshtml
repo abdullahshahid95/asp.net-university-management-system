@@ -1,0 +1,49 @@
+﻿@model IEnumerable<UMS.Models.Employee>
+@{
+    ViewBag.Title = "Emoloyee";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@{
+    UMS.Dtos.DesignationDto d = new UMS.Dtos.DesignationDto();
+    var list = d.empDesignationList;
+}
+<br />
+@Html.ActionLink("Add Employee", "New", "Employee", new { @class = "btn btn-primary", @style = "float:right" })
+<h2>Employee</h2>
+<table id="employee" class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Designation</th>
+            <th>Qualification</th>
+            <th>Edit</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var employee in Model)
+        {
+            <tr>
+                <td>@Html.ActionLink(employee.Name, "Details", "Employee", new { id = employee.Id }, null)</td>
+                <td>@list.SingleOrDefault(c => c.Id == employee.DesignationId).Name</td>
+                <td>@employee.Qualification</td>
+                <td>@Html.ActionLink("Edit", "Edit", "Employee", new { id = employee.Id }, null)</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+            $('#employee').DataTable({
+                "bSort": false
+            });
+        });
+    </script>
+
+    @*<script type="text/javascript" charset="utf-8" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.js">
+        </script>*@
+}
+

@@ -1,0 +1,55 @@
+﻿@model IEnumerable<UMS.Models.TeacherCourse>
+@{
+    ViewBag.Title = "IndexTeacherCourse";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    UMS.Models.ApplicationDbContext _context = new UMS.Models.ApplicationDbContext();
+    var departments = _context.Departments;
+}
+
+<h2>Unassign Course</h2>
+<table id="records" class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>Teacher</th>
+            <th>Course</th>
+            <th>Department,Semester,Section</th>
+            <th>Room</th>
+            <th>Timing</th>
+            <th>Edit</th>
+            <th>Delete</th>
+        </tr>
+    </thead>
+    @foreach (var record in Model)
+    {
+        <tbody>
+            <tr class="jsRecord" data-record-id = @record.Id>
+                <td>@record.Teacher.Name</td>
+                <td>@record.Course.Name</td>
+                <td>@departments.SingleOrDefault(d => d.Id == record.Course.DepartmentId).ShortName@record.Course.SemesterId@record.Section</td>
+                <td>@record.Room</td>
+                <td>@record.StartTime to @record.EndTime</td>
+                <td>@Html.ActionLink("Edit", "")</td>
+            </tr>
+        </tbody>
+    }
+</table>
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+            $("#records").on("click", function () {
+                var button = $(this);
+                console.log("Hello world2");
+                bootbox.confirm("Student will be permanantly deleted from database.\nContinue?", function (result) {
+                    if (result) {
+                        window.location.href = "/Students/Delete/" + button.attr("data-student-id");
+                    }
+                });
+            });
+            $("#editSection").on("click", function () {
+                window.location.href = "/Students/EditSection/" + $(this).attr("data-student-id");
+            });
+        });
+    </script>
+}

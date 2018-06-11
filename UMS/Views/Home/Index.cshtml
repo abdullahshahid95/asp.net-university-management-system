@@ -1,0 +1,25 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="jumbotron">
+    <h2>Welcome</h2>
+    <div class="row">
+        @Html.ActionLink("Students", "Index", "Students", null, new { @class = "btn btn-default" })
+    </div>
+    <div class="row">
+        @Html.ActionLink("Teachers", "Index", "Teachers", null, new { @class = "btn btn-default" })
+    </div>
+    <div class="row">
+        @Html.ActionLink("Assign Course To Teacher", "NewCourse", "Teachers", null, new { @class = "btn btn-default", @style = "float:right;" })
+    </div>
+    <div class="row">
+        @Html.ActionLink("Employee", "Index", "Employee", null, new { @class = "btn btn-default" })
+    </div>
+    <div class="row">
+        @Html.ActionLink("Courses", "Index", "Courses", null, new { @class = "btn btn-default" })
+    </div>
+    <div class="row">
+        @Html.ActionLink("Departments", "Index", "Departments", null, new { @class = "btn btn-default" })
+    </div>
+</div>

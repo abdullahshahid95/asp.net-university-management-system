@@ -1,0 +1,16 @@
+﻿
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<br />
+@Html.ActionLink("Go Back", "Index", "Departments", null, new { @class = "btn btn-primary" })
+<h2>Department Details</h2>
+<table class="table table-bordered table-hover">
+    <tr><th>Name</th><td>@ViewBag.department.Name</td></tr>
+    <tr><th>Short Name</th><td>@ViewBag.department.ShortName</td></tr>
+    <tr><th>Building</th><td>@ViewBag.department.Building</td></tr>
+    <tr><th>Number of Students</th><td>@ViewBag.studentCount</td></tr>
+</table>
+

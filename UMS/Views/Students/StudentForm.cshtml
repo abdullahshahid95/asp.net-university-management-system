@@ -1,0 +1,285 @@
+﻿@model UMS.ViewModels.StudentFormViewModel
+@{
+    ViewBag.Title = "New Student";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@if(Model.Flag == 1)
+{
+    <br />
+    <button id="deleteS" class="btn btn-danger" data-student-id=@Model.Student.Id style="float:right">Delete Student</button><br /><br />
+    <button id="editSection" class="btn btn-default" data-student-id=@Model.Student.Id style="float:right">Edit Section</button><br /><br />
+    @Html.ActionLink("Add Semester", "New", "StudentSemester", new {id = Model.Student.Id}, new { @class = "btn btn-primary", @style = "float: right" })<br /><br />
+    foreach (var fee in ViewBag.fees)
+    {
+        string str = "Edit Semester " + fee.SemesterId.ToString();
+        @Html.ActionLink(str, "Edit", "StudentSemester", new {id = fee.Id }, new {@class = "btn btn-default", @style="float: right" });<br /><br />
+    }
+
+    //@Html.ActionLink("Delete Student", "Delete", "Students", new { Id = Model.Student.Id }, new { @class = "btn btn-primary", @style = "float:right; margin-top:2px"})
+}
+
+<h2>Add New Student</h2>
+
+@using (Html.BeginForm("Save", "Students", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <h3>Select Program</h3>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Student.ProgramId)
+        @if (Model.Flag == 0)
+        {
+            @Html.DropDownListFor(m => m.Student.ProgramId, new SelectList(Model.Programs, "Id", "Name"), "Select Program", new { @class = "form-control" })
+        }
+        else
+        {
+            @Html.DropDownListFor(m => m.Student.ProgramId, new SelectList(Model.Programs, "Id", "Name"), "Select Program", new { @class = "form-control", @readonly = "readonly" })
+        }
+
+        @Html.ValidationMessageFor(m => m.Student.ProgramId)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Student.DepartmentId)
+        @if (Model.Flag == 0)
+        {
+        @Html.DropDownListFor(m => m.Student.DepartmentId, new SelectList(Model.Departments, "Id", "Name"), "Study Program", new { @class = "form-control" })
+        }
+        else
+        {
+            @Html.DropDownListFor(m => m.Student.DepartmentId, new SelectList(Model.Departments, "Id", "Name"), "Study Program", new { @class = "form-control", @readonly = "readonly" })
+        }
+        @Html.ValidationMessageFor(m => m.Student.DepartmentId)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Student.BatchYear)
+        @Html.TextBoxFor(m => m.Student.BatchYear, new {@Value=DateTime.Now.Year, @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Student.BatchYear)
+    </div>
+    
+    <hr />
+
+    <h3>Personal Information</h3>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Student.Picture)
+        <input type="file" name="test" style="display:inline-block"/>
+        @Html.ValidationMessageFor(m => m.Student.Picture)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Student.Name)
+        @Html.TextBoxFor(m => m.Student.Name, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Student.Name)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Student.FatherName)
+        @Html.TextBoxFor(m => m.Student.FatherName, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Student.FatherName)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Student.Gender)<strong>: </strong>
+        @Html.RadioButtonFor(m => m.Student.Gender, "Male") Male
+        @Html.RadioButtonFor(m => m.Student.Gender, "Female")Female
+        @Html.ValidationMessageFor(m => m.Student.Gender)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Student.DateOfBirth)
+        @Html.DropDownListFor(m => m.Student.DayId, new SelectList(Model.Day, "Id", "Name"), "Day")
+        @Html.ValidationMessageFor(m => m.Student.DayId)
+        @Html.DropDownListFor(m => m.Student.MonthId, new SelectList(Model.Month, "Id", "Name"), "Month")
+        @Html.ValidationMessageFor(m => m.Student.MonthId)
+        @Html.DropDownListFor(m => m.Student.YearId, new SelectList(Model.Year, "Id", "Name"), "Year")
+        @Html.ValidationMessageFor(m => m.Student.YearId)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Student.PlaceOfBirth)
+        @Html.TextBoxFor(m => m.Student.PlaceOfBirth, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Student.PlaceOfBirth)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Student.Nationality)
+        @Html.TextBoxFor(m => m.Student.Nationality, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Student.Nationality)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Student.Province)
+        @Html.TextBoxFor(m => m.Student.Province, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Student.Province)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Student.ApplicantCnic)
+        @Html.TextBoxFor(m => m.Student.ApplicantCnic, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Student.ApplicantCnic)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Student.Mobile)
+        @Html.TextBoxFor(m => m.Student.Mobile, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Student.Mobile)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Student.Phone)
+        @Html.TextBoxFor(m => m.Student.Phone, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Student.Phone)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Student.Address)
+        @Html.TextAreaFor(m => m.Student.Address, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Student.Address)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Student.Email)
+        @Html.TextBoxFor(m => m.Student.Email, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Student.Email)
+    </div>
+    <hr />
+    <h3>Qualification</h3>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Student.SSCId)
+        @Html.DropDownListFor(m => m.Student.SSCId, new SelectList(Model.SSC, "Id", "Name"), "Select Matric Board", new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Student.SSCId)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Student.SSCTotal)
+        @Html.TextBoxFor(m => m.Student.SSCTotal, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Student.SSCTotal)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Student.SSCObtained)
+        @Html.TextBoxFor(m => m.Student.SSCObtained, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Student.SSCObtained)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Student.SSCSeat)
+        @Html.TextBoxFor(m => m.Student.SSCSeat, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Student.SSCSeat)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Student.HSCId)
+        @Html.DropDownListFor(m => m.Student.HSCId, new SelectList(Model.HSC, "Id", "Name"), "Select Intermediate Board", new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Student.HSCId)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Student.HSCTotal)
+        @Html.TextBoxFor(m => m.Student.HSCTotal, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Student.HSCTotal)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Student.HSCObtained)
+        @Html.TextBoxFor(m => m.Student.HSCObtained, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Student.HSCObtained)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Student.HSCSeat)
+        @Html.TextBoxFor(m => m.Student.HSCSeat, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Student.HSCSeat)
+    </div>
+    <hr />
+    <h3>Guardian's Information</h3>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Student.GuardianName)
+        @Html.TextBoxFor(m => m.Student.GuardianName, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Student.GuardianName)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Student.GuardianCnic)
+        @Html.TextBoxFor(m => m.Student.GuardianCnic, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Student.GuardianCnic)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Student.Relation)
+        @Html.TextBoxFor(m => m.Student.Relation, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Student.Relation)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Student.Occupation)
+        @Html.TextBoxFor(m => m.Student.Occupation, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Student.Occupation)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Student.MonthlyIncome)
+        @Html.TextBoxFor(m => m.Student.MonthlyIncome, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Student.MonthlyIncome)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Student.GuardianPhone)
+        @Html.TextBoxFor(m => m.Student.GuardianPhone, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Student.GuardianPhone)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Student.GuardianMobile)
+        @Html.TextBoxFor(m => m.Student.GuardianMobile, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Student.GuardianMobile)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Student.GuardianAddress)
+        @Html.TextAreaFor(m => m.Student.GuardianAddress, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Student.GuardianAddress)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Student.GuardianEmail)
+        @Html.TextBoxFor(m => m.Student.GuardianEmail, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Student.GuardianEmail)
+    </div>
+    @*<h3>Academics</h3>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Student.Section)
+        @Html.TextBoxFor(m => m.Student.Section, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Student.Section)
+    </div>*@
+    @Html.HiddenFor(m => m.Student.Id)
+    @Html.HiddenFor(m => m.Student.DateAdded, new { @Value = DateTime.Now})
+
+    if (Model.Flag == 1)
+    {
+        <button type="submit" class="btn btn-primary">Save</button>
+    }
+    else
+    {
+        <button type="submit" class="btn btn-primary">Next</button>
+    }
+
+
+}
+
+@section scripts
+{
+
+<script>
+        $(document).ready(function () {
+            $("#deleteS").on("click", function () {
+                var button = $(this);
+                console.log("Hello world2");
+                bootbox.confirm("Student will be permanantly deleted from database.\nContinue?", function (result) {
+                    if (result) {
+                        window.location.href = "/Students/Delete/" + button.attr("data-student-id");
+                    }
+                });
+            });
+            $("#editSection").on("click", function () {
+                window.location.href = "/Students/EditSection/" + $(this).attr("data-student-id");
+            });
+        });
+</script>
+
+
+
+
+
+
+
+    @*@if (Model.Flag == 1)
+    {
+    <script>
+        function confirmMessage() {
+            if (confirm("Delete the student permanently?")) {
+                window.location.href = "/Students/Delete/" + @Model.Student.Id;
+            }
+            else {
+                console.log("not deleted");
+            }
+            //window.confirm("Hello world");
+        }
+    </script>
+    }*@
+
+    @Scripts.Render("~/bundles/jqueryval");
+}
+

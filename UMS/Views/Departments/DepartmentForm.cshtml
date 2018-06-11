@@ -1,0 +1,54 @@
+﻿@model UMS.Models.Department
+@{
+    ViewBag.Title = "Add Department";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@if (ViewBag.flag == 1)
+{
+    <br />
+    <button id="deleteS" class="btn btn-danger" data-department-id=@Model.Id style="float:right">Delete Department</button>
+    //@Html.ActionLink("Delete Student", "Delete", "Students", new { Id = Model.Student.Id }, new { @class = "btn btn-primary", @style = "float:right; margin-top:2px"})
+}
+
+<h2>Add Department</h2>
+@using (Html.BeginForm("Save", "Departments"))
+{
+    <div class="form-group">
+        @Html.LabelFor(m => m.Name)
+        @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Name)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.ShortName)
+        @Html.TextBoxFor(m => m.ShortName, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.ShortName)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Building)
+        @Html.TextBoxFor(m => m.Building, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Building)
+    </div>
+    @Html.HiddenFor(m => m.Id)
+    <button type="submit" class="btn btn-primary">Save</button>
+
+}
+
+@section scripts
+{
+<script>
+        $(document).ready(function () {
+            $("#deleteS").on("click", function () {
+                var button = $(this);
+                console.log("Hello world2");
+                bootbox.confirm("Department will be permanantly deleted from database. Continue?", function (result) {
+                    if (result) {
+                        window.location.href = "/Departments/Delete/" + button.attr("data-department-id");
+                    }
+                });
+            });
+        });
+</script>
+
+@Scripts.Render("~/bundles/jqueryval");
+}
+

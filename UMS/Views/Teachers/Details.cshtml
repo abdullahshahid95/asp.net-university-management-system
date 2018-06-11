@@ -1,0 +1,1053 @@
+﻿@model UMS.Models.Teacher
+@{
+    ViewBag.Title = "Teacher";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@{
+
+    UMS.Dtos.Day d = new UMS.Dtos.Day();
+    var list = d.days;
+
+    var records = ((List<UMS.Dtos.TeacherTimeTable>)ViewBag.timetable);
+
+    var monday = records.Where(r => r.Day == "Monday");
+    var tuesday = records.Where(r => r.Day == "Tuesday");
+    var wednesday = records.Where(r => r.Day == "Wednesday");
+    var thursday = records.Where(r => r.Day == "Thursday");
+    var friday = records.Where(r => r.Day == "Friday");
+
+    var mf = monday.SingleOrDefault(m => m.StartTime == "8:30AM" && m.EndTime == "9:20AM");
+    var ms = monday.SingleOrDefault(m => m.StartTime == "9:20AM" && m.EndTime == "10:10AM");
+    var mt = monday.SingleOrDefault(m => m.StartTime == "10:10AM" && m.EndTime == "11:0AM");
+    var mfo = monday.SingleOrDefault(m => m.StartTime == "11:0AM" && m.EndTime == "11:50AM");
+    var mfi = monday.SingleOrDefault(m => m.StartTime == "11:50AM" && m.EndTime == "12:40PM");
+    var msi = monday.SingleOrDefault(m => m.StartTime == "12:40PM" && m.EndTime == "1:30PM");
+    var mse = monday.SingleOrDefault(m => m.StartTime == "1:30PM" && m.EndTime == "2:20PM");
+    var me = monday.SingleOrDefault(m => m.StartTime == "2:20PM" && m.EndTime == "3:10PM");
+    var mn = monday.SingleOrDefault(m => m.StartTime == "3:10PM" && m.EndTime == "4:0PM");
+    var mte = monday.SingleOrDefault(m => m.StartTime == "4:0PM" && m.EndTime == "4:45PM");
+}
+<br />
+@Html.ActionLink("Go Back", "Index", "Teachers", null, new { @class = "btn btn-primary" })
+<h2>Teacher Details</h2>
+<img src="~/Photos/@Model.Picture" style="width:150px; height:200px" /><br />
+<table class="table table-bordered table-hover">
+    <tr><th>Name</th><td>@Model.Name</td></tr>
+    <tr><th>Designation</th><td>@ViewBag.designation.Name</td></tr>
+    <tr><th>Qualification</th><td>@Model.Qualification</td></tr>
+    <tr><th>Gender</th><td>@Model.Gender</td></tr>
+    <tr><th>Mobile</th><td>@Model.Mobile</td></tr>
+    <tr><th>Address</th><td>@Model.Address</td></tr>
+</table>
+@if(!((IEnumerable<dynamic>)ViewBag.teacherCourses).Any())
+{
+    <text>No Courses Assigned</text>
+}
+else
+{
+    <h2>Assigned Courses</h2>
+    <table id="timeTable" class="table-bordered">
+        <tr id="fridaysrow">
+            <th>Fridays</th>
+            <th>8:30<br />9:15</th>
+            <th>9:15<br />10:00</th>
+            <th>10:00<br />10:45</th>
+            <th>10:45<br />11:30</th>
+            <th>11:30<br />12:15</th>
+            <th>12:15<br />1:00</th>
+            <th>2:30<br />3:15</th>
+            <th>3:15<br />4:00</th>
+            <th>4:00<br />4:45</th>
+            <th>4:45<br />5:30</th>
+        </tr>
+        <tr id="timeTableTime">
+            <th>Days\Timings</th>
+            <th>8:30<br />9:20</th>
+            <th>9:20<br />10:10</th>
+            <th>10:10<br />11:00</th>
+            <th>11:00<br />11:50</th>
+            <th>11:50<br />12:40</th>
+            <th>12:40<br />1:30</th>
+            <th>1:30<br />2:20</th>
+            <th>2:20<br />3:10</th>
+            <th>3:10<br />4:00</th>
+            <th>4:00<br />4:50</th>
+        </tr>
+        <tr>
+            <th>
+                Monday
+            </th>
+            <td>
+                @try
+                {
+                    foreach (var record in monday)
+                    {
+
+                        if (record.EndTime == "9:20AM")
+                        {
+                            <text>@record.Course</text><br />
+                            
+                            <text><small class="smt">@record.Department@record.Semester@record.Section<br/>@record.Room</small></text><br />
+                        }
+
+                    }
+                }
+                catch (Exception) { }
+            </td>
+            <td>
+                @try
+                {
+                    foreach (var record in monday)
+                    {
+
+                        if (record.EndTime == "10:10AM")
+                        {
+                            <text>@record.Course</text><br />
+                            
+                            <text><small class="smt">@record.Department@record.Semester@record.Section<br/>@record.Room</small></text><br />
+                        }
+
+
+                    }
+                }
+                catch (Exception) { }
+            </td>
+            <td>
+                @try
+                {
+                    foreach (var record in monday)
+                    {
+
+                        if (record.EndTime == "11:0AM")
+                        {
+                            <text>@record.Course</text><br />
+                            
+                            <text><small class="smt">@record.Department@record.Semester@record.Section<br/>@record.Room</small></text><br />
+                        }
+
+
+                    }
+                }
+                catch (Exception) { }
+            </td>
+            <td>
+                @try
+                {
+                    foreach (var record in monday)
+                    {
+
+                        if (record.EndTime == "11:50AM")
+                        {
+                            <text>@record.Course</text><br />
+                            
+                            <text><small class="smt">@record.Department@record.Semester@record.Section<br/>@record.Room</small></text><br />
+                        }
+
+
+                    }
+                }
+                catch (Exception) { }
+            </td>
+            <td>
+                @try
+                {
+                    foreach (var record in monday)
+                    {
+
+                        if (record.EndTime == "12:40PM")
+                        {
+                            <text>@record.Course</text><br />
+                            
+                            <text><small class="smt">@record.Department@record.Semester@record.Section<br/>@record.Room</small></text><br />
+                        }
+
+
+                    }
+                }
+                catch (Exception) { }
+            </td>
+            <td>
+                @try
+                {
+                    foreach (var record in monday)
+                    {
+
+                        if (record.EndTime == "1:30PM")
+                        {
+                            <text>@record.Course</text><br />
+                            
+                            <text><small class="smt">@record.Department@record.Semester@record.Section<br/>@record.Room</small></text><br />
+                        }
+
+
+                    }
+                }
+                catch (Exception) { }
+            </td>
+            <td>
+                @try
+                {
+                    foreach (var record in monday)
+                    {
+
+                        if (record.EndTime == "2:20PM")
+                        {
+                            <text>@record.Course</text><br />
+                            
+                            <text><small class="smt">@record.Department@record.Semester@record.Section<br/>@record.Room</small></text><br />
+                        }
+
+
+                    }
+                }
+                catch (Exception) { }
+            </td>
+            <td>
+                @try
+                {
+                    foreach (var record in monday)
+                    {
+
+                        if (record.EndTime == "3:10PM")
+                        {
+                            <text>@record.Course</text><br />
+                            
+                            <text><small class="smt">@record.Department@record.Semester@record.Section<br/>@record.Room</small></text><br />
+                        }
+
+
+                    }
+                }
+                catch (Exception) { }
+            </td>
+            <td>
+                @try
+                {
+                    foreach (var record in monday)
+                    {
+
+                        if (record.EndTime == "4:0PM")
+                        {
+                            <text>@record.Course</text><br />
+                            
+                            <text><small class="smt">@record.Department@record.Semester@record.Section<br/>@record.Room</small></text><br />
+                        }
+
+
+                    }
+                }
+                catch (Exception) { }
+            </td>
+            <td>
+                @try
+                {
+                    foreach (var record in monday)
+                    {
+
+                        if (record.EndTime == "4:45PM")
+                        {
+                            <text>@record.Course</text><br />
+                            
+                            <text><small class="smt">@record.Department@record.Semester@record.Section<br/>@record.Room</small></text><br />
+                        }
+
+
+                    }
+                }
+                catch (Exception) { }
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Tuesday
+            </th>
+            <td>
+                @try
+                {
+                    foreach (var record in tuesday)
+                    {
+
+                        if (record.EndTime == "9:20AM")
+                        {
+                            <text>@record.Course</text><br />
+                                
+                                <text><small class="smt">@record.Department@record.Semester@record.Section<br/>@record.Room</small></text><br />
+                        }
+
+
+                    }
+                }
+                catch (Exception) { }
+            </td>
+            <td>
+                @try
+                {
+                    foreach (var record in tuesday)
+                    {
+
+                        if (record.EndTime == "10:10AM")
+                        {
+                            <text>@record.Course</text><br />
+                                
+                                <text><small class="smt">@record.Department@record.Semester@record.Section<br/>@record.Room</small></text><br />
+                        }
+
+
+                    }
+                }
+                catch (Exception) { }
+            </td>
+            <td>
+                @try
+                {
+                    foreach (var record in tuesday)
+                    {
+
+                        if (record.EndTime == "11:0AM")
+                        {
+                            <text>@record.Course</text><br />
+                                
+                                <text><small class="smt">@record.Department@record.Semester@record.Section<br/>@record.Room</small></text><br />
+                        }
+
+
+                    }
+                }
+                catch (Exception) { }
+            </td>
+            <td>
+                @try
+                {
+                    foreach (var record in tuesday)
+                    {
+
+                        if (record.EndTime == "11:50AM")
+                        {
+                            <text>@record.Course</text><br />
+                                
+                                <text><small class="smt">@record.Department@record.Semester@record.Section<br/>@record.Room</small></text><br />
+                        }
+
+
+                    }
+                }
+                catch (Exception) { }
+            </td>
+            <td>
+                @try
+                {
+                    foreach (var record in tuesday)
+                    {
+
+                        if (record.EndTime == "12:40PM")
+                        {
+                            <text>@record.Course</text><br />
+                                
+                                <text><small class="smt">@record.Department@record.Semester@record.Section<br/>@record.Room</small></text><br />
+                        }
+
+
+                    }
+                }
+                catch (Exception) { }
+            </td>
+            <td>
+                @try
+                {
+                    foreach (var record in tuesday)
+                    {
+
+                        if (record.EndTime == "1:30PM")
+                        {
+                            <text>@record.Course</text><br />
+                                
+                                <text><small class="smt">@record.Department@record.Semester@record.Section<br/>@record.Room</small></text><br />
+                        }
+
+
+                    }
+                }
+                catch (Exception) { }
+            </td>
+            <td>
+                @try
+                {
+                    foreach (var record in tuesday)
+                    {
+
+                        if (record.EndTime == "2:20PM")
+                        {
+                            <text>@record.Course</text><br />
+                                
+                                <text><small class="smt">@record.Department@record.Semester@record.Section<br/>@record.Room</small></text><br />
+                        }
+
+
+                    }
+                }
+                catch (Exception) { }
+            </td>
+            <td>
+                @try
+                {
+                    foreach (var record in tuesday)
+                    {
+
+                        if (record.EndTime == "3:10PM")
+                        {
+                            <text>@record.Course</text><br />
+                                
+                                <text><small class="smt">@record.Department@record.Semester@record.Section<br/>@record.Room</small></text><br />
+                        }
+
+
+                    }
+                }
+                catch (Exception) { }
+            </td>
+            <td>
+                @try
+                {
+                    foreach (var record in tuesday)
+                    {
+
+                        if (record.EndTime == "4:0PM")
+                        {
+                            <text>@record.Course</text><br />
+                                
+                                <text><small class="smt">@record.Department@record.Semester@record.Section<br/>@record.Room</small></text><br />
+                        }
+
+
+                    }
+                }
+                catch (Exception) { }
+            </td>
+            <td>
+                @try
+                {
+                    foreach (var record in tuesday)
+                    {
+
+                        if (record.EndTime == "4:45PM")
+                        {
+                            <text>@record.Course</text><br />
+                                
+                                <text><small class="smt">@record.Department@record.Semester@record.Section<br/>@record.Room</small></text><br />
+                        }
+
+
+                    }
+                }
+                catch (Exception) { }
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Wednesday
+            </th>
+            <td>
+                @try
+                {
+                    foreach (var record in wednesday)
+                    {
+
+                        if (record.EndTime == "9:20AM")
+                        {
+                            <text>@record.Course</text><br />
+                                
+                                <text><small class="smt">@record.Department@record.Semester@record.Section<br/>@record.Room</small></text><br />
+                        }
+
+
+                    }
+                }
+                catch (Exception) { }
+            </td>
+            <td>
+                @try
+                {
+                    foreach (var record in wednesday)
+                    {
+
+                        if (record.EndTime == "10:10AM")
+                        {
+                            <text>@record.Course</text><br />
+                                
+                                <text><small class="smt">@record.Department@record.Semester@record.Section<br/>@record.Room</small></text><br />
+                        }
+
+
+                    }
+                }
+                catch (Exception) { }
+            </td>
+            <td>
+                @try
+                {
+                    foreach (var record in wednesday)
+                    {
+
+                        if (record.EndTime == "11:0AM")
+                        {
+                            <text>@record.Course</text><br />
+                                
+                                <text><small class="smt">@record.Department@record.Semester@record.Section<br/>@record.Room</small></text><br />
+                        }
+
+
+                    }
+                }
+                catch (Exception) { }
+            </td>
+            <td>
+                @try
+                {
+                    foreach (var record in wednesday)
+                    {
+
+                        if (record.EndTime == "11:50AM")
+                        {
+                            <text>@record.Course</text><br />
+                                
+                                <text><small class="smt">@record.Department@record.Semester@record.Section<br/>@record.Room</small></text><br />
+                        }
+
+
+                    }
+                }
+                catch (Exception) { }
+            </td>
+            <td>
+                @try
+                {
+                    foreach (var record in wednesday)
+                    {
+
+                        if (record.EndTime == "12:40PM")
+                        {
+                            <text>@record.Course</text><br />
+                                
+                                <text><small class="smt">@record.Department@record.Semester@record.Section<br/>@record.Room</small></text><br />
+                        }
+
+
+                    }
+                }
+                catch (Exception) { }
+            </td>
+            <td>
+                @try
+                {
+                    foreach (var record in wednesday)
+                    {
+
+                        if (record.EndTime == "1:30PM")
+                        {
+                            <text>@record.Course</text><br />
+                                
+                                <text><small class="smt">@record.Department@record.Semester@record.Section<br/>@record.Room</small></text><br />
+                        }
+
+
+                    }
+                }
+                catch (Exception) { }
+            </td>
+            <td>
+                @try
+                {
+                    foreach (var record in wednesday)
+                    {
+
+                        if (record.EndTime == "2:20PM")
+                        {
+                            <text>@record.Course</text><br />
+                                
+                                <text><small class="smt">@record.Department@record.Semester@record.Section<br/>@record.Room</small></text><br />
+                        }
+
+
+                    }
+                }
+                catch (Exception) { }
+            </td>
+            <td>
+                @try
+                {
+                    foreach (var record in wednesday)
+                    {
+
+                        if (record.EndTime == "3:10PM")
+                        {
+                            <text>@record.Course</text><br />
+                                
+                                <text><small class="smt">@record.Department@record.Semester@record.Section<br/>@record.Room</small></text><br />
+                        }
+
+
+                    }
+                }
+                catch (Exception) { }
+            </td>
+            <td>
+                @try
+                {
+                    foreach (var record in wednesday)
+                    {
+
+                        if (record.EndTime == "4:0PM")
+                        {
+                            <text>@record.Course</text><br />
+                                
+                                <text><small class="smt">@record.Department@record.Semester@record.Section<br/>@record.Room</small></text><br />
+                        }
+
+
+                    }
+                }
+                catch (Exception) { }
+            </td>
+            <td>
+                @try
+                {
+                    foreach (var record in wednesday)
+                    {
+
+                        if (record.EndTime == "4:45PM")
+                        {
+                            <text>@record.Course</text><br />
+                                
+                                <text><small class="smt">@record.Department@record.Semester@record.Section<br/>@record.Room</small></text><br />
+                        }
+
+
+                    }
+                }
+                catch (Exception) { }
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Thursday
+            </th>
+            <td>
+                @try
+                {
+                    foreach (var record in thursday)
+                    {
+
+                        if (record.EndTime == "9:20AM")
+                        {
+                            <text>@record.Course</text><br />
+                                
+                                <text><small class="smt">@record.Department@record.Semester@record.Section<br/>@record.Room</small></text><br />
+                        }
+
+
+                    }
+                }
+                catch (Exception) { }
+            </td>
+            <td>
+                @try
+                {
+                    foreach (var record in thursday)
+                    {
+
+                        if (record.EndTime == "10:10AM")
+                        {
+                            <text>@record.Course</text><br />
+                                
+                                <text><small class="smt">@record.Department@record.Semester@record.Section<br/>@record.Room</small></text><br />
+                        }
+
+
+                    }
+                }
+                catch (Exception) { }
+            </td>
+            <td>
+                @try
+                {
+                    foreach (var record in thursday)
+                    {
+
+                        if (record.EndTime == "11:0AM")
+                        {
+                            <text>@record.Course</text><br />
+                                
+                                <text><small class="smt">@record.Department@record.Semester@record.Section<br/>@record.Room</small></text><br />
+                        }
+
+
+                    }
+                }
+                catch (Exception) { }
+            </td>
+            <td>
+                @try
+                {
+                    foreach (var record in thursday)
+                    {
+
+                        if (record.EndTime == "11:50AM")
+                        {
+                            <text>@record.Course</text><br />
+                                
+                                <text><small class="smt">@record.Department@record.Semester@record.Section<br/>@record.Room</small></text><br />
+                        }
+
+
+                    }
+                }
+                catch (Exception) { }
+            </td>
+            <td>
+                @try
+                {
+                    foreach (var record in thursday)
+                    {
+
+                        if (record.EndTime == "12:40PM")
+                        {
+                            <text>@record.Course</text><br />
+                                
+                                <text><small class="smt">@record.Department@record.Semester@record.Section<br/>@record.Room</small></text><br />
+                        }
+
+
+                    }
+                }
+                catch (Exception) { }
+            </td>
+            <td>
+                @try
+                {
+                    foreach (var record in thursday)
+                    {
+
+                        if (record.EndTime == "1:30PM")
+                        {
+                            <text>@record.Course</text><br />
+                                
+                                <text><small class="smt">@record.Department@record.Semester@record.Section<br/>@record.Room</small></text><br />
+                        }
+
+
+                    }
+                }
+                catch (Exception) { }
+            </td>
+            <td>
+                @try
+                {
+                    foreach (var record in thursday)
+                    {
+
+                        if (record.EndTime == "2:20PM")
+                        {
+                            <text>@record.Course</text><br />
+                                
+                                <text><small class="smt">@record.Department@record.Semester@record.Section<br/>@record.Room</small></text><br />
+                        }
+
+
+                    }
+                }
+                catch (Exception) { }
+            </td>
+            <td>
+                @try
+                {
+                    foreach (var record in thursday)
+                    {
+
+                        if (record.EndTime == "3:10PM")
+                        {
+                            <text>@record.Course</text><br />
+                                
+                                <text><small class="smt">@record.Department@record.Semester@record.Section<br/>@record.Room</small></text><br />
+                        }
+
+
+                    }
+                }
+                catch (Exception) { }
+            </td>
+            <td>
+                @try
+                {
+                    foreach (var record in thursday)
+                    {
+
+                        if (record.EndTime == "4:0PM")
+                        {
+                            <text>@record.Course</text><br />
+                                
+                                <text><small class="smt">@record.Department@record.Semester@record.Section<br/>@record.Room</small></text><br />
+                        }
+
+
+                    }
+                }
+                catch (Exception) { }
+            </td>
+            <td>
+                @try
+                {
+                    foreach (var record in thursday)
+                    {
+
+                        if (record.EndTime == "4:45PM")
+                        {
+                            <text>@record.Course</text><br />
+                                
+                                <text><small class="smt">@record.Department@record.Semester@record.Section<br/>@record.Room</small></text><br />
+                        }
+
+
+                    }
+                }
+                catch (Exception) { }
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Friday
+            </th>
+            <td>
+                @try
+                {
+                    foreach (var record in friday)
+                    {
+
+                        if (record.EndTime == "9:15AM")
+                        {
+                            <text>@record.Course</text><br />
+                                
+                                <text><small class="smt">@record.Department@record.Semester@record.Section<br/>@record.Room</small></text><br />
+                        }
+
+
+                    }
+                }
+                catch (Exception) { }
+            </td>
+            <td>
+                @try
+                {
+                    foreach (var record in friday)
+                    {
+
+                        if (record.EndTime == "10:0AM")
+                        {
+                            <text>@record.Course</text><br />
+                                
+                                <text><small class="smt">@record.Department@record.Semester@record.Section<br/>@record.Room</small></text><br />
+                        }
+
+
+                    }
+                }
+                catch (Exception) { }
+            </td>
+            <td>
+                @try
+                {
+                    foreach (var record in friday)
+                    {
+
+                        if (record.EndTime == "10:45AM")
+                        {
+                            <text>@record.Course</text><br />
+                                
+                                <text><small class="smt">@record.Department@record.Semester@record.Section<br/>@record.Room</small></text><br />
+                        }
+
+
+                    }
+                }
+                catch (Exception) { }
+            </td>
+            <td>
+                @try
+                {
+                    foreach (var record in friday)
+                    {
+
+                        if (record.EndTime == "11:30AM")
+                        {
+                            <text>@record.Course</text><br />
+                                
+                                <text><small class="smt">@record.Department@record.Semester@record.Section<br/>@record.Room</small></text><br />
+                        }
+
+
+                    }
+                }
+                catch (Exception) { }
+            </td>
+            <td>
+                @try
+                {
+                    foreach (var record in friday)
+                    {
+
+                        if (record.EndTime == "12:15PM")
+                        {
+                            <text>@record.Course</text><br />
+                                
+                                <text><small class="smt">@record.Department@record.Semester@record.Section<br/>@record.Room</small></text><br />
+                        }
+
+
+                    }
+                }
+                catch (Exception) { }
+            </td>
+            <td>
+                @try
+                {
+                    foreach (var record in friday)
+                    {
+
+                        if (record.EndTime == "1:0PM")
+                        {
+                            <text>@record.Course</text><br />
+                                
+                                <text><small class="smt">@record.Department@record.Semester@record.Section<br/>@record.Room</small></text><br />
+                        }
+
+
+                    }
+                }
+                catch (Exception) { }
+            </td>
+            <td>
+                @try
+                {
+                    foreach (var record in friday)
+                    {
+
+                        if (record.EndTime == "3:15PM")
+                        {
+                            <text>@record.Course</text><br />
+                                
+                                <text><small class="smt">@record.Department@record.Semester@record.Section<br/>@record.Room</small></text><br />
+                        }
+
+
+                    }
+                }
+                catch (Exception) { }
+            </td>
+            <td>
+                @try
+                {
+                    foreach (var record in friday)
+                    {
+
+                        if (record.EndTime == "4:0PM")
+                        {
+                            <text>@record.Course</text><br />
+                                
+                                <text><small class="smt">@record.Department@record.Semester@record.Section<br/>@record.Room</small></text><br />
+                        }
+
+
+                    }
+                }
+                catch (Exception) { }
+            </td>
+            <td>
+                @try
+                {
+                    foreach (var record in friday)
+                    {
+
+                        if (record.EndTime == "4:45PM")
+                        {
+                            <text>@record.Course</text><br />
+                                
+                                <text><small class="smt">@record.Department@record.Semester@record.Section<br/>@record.Room</small></text><br />
+                        }
+
+
+                    }
+                }
+                catch (Exception) { }
+            </td>
+            <td>
+                @try
+                {
+                    foreach (var record in friday)
+                    {
+
+                        if (record.EndTime == "5:30PM")
+                        {
+                            <text>@record.Course</text><br />
+                                
+                                <text><small class="smt">@record.Department@record.Semester@record.Section<br/>@record.Room</small></text><br />
+                        }
+
+
+                    }
+                }
+                catch (Exception) { }
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Saturday
+            </th>
+        </tr>
+        <tr>
+            <th>
+                Sunday
+            </th>
+        </tr>
+    </table>
+    @*<table class="table table-bordered table-hover">
+        <tr>
+            <th>Course</th>
+            <th>Section</th>
+            <th>Day Timing</th>
+        </tr>
+        @foreach (var course in ViewBag.teacherCourses)
+        {
+            <tr>
+                <td>@course.Course.Name</td>
+                <td>@course.Section</td>
+                <td>@list.SingleOrDefault(da => da.Id == @course.DayId).Name --- @course.StartTime - @course.EndTime</td>
+            </tr>
+        }
+    </table>*@
+}
+@if (!((IEnumerable<dynamic>)ViewBag.salaries).Any())
+{
+    <text>No salary record</text>
+}
+else
+{
+    <h2>Salary List</h2>
+    <table class="table table-bordered table-hover">
+        <tr>
+            <th>Year</th>
+            <th>Month</th>
+            <th>Total</th>
+            <th>Paid</th>
+            <th>Unpaid</th>
+        </tr>
+        @foreach (var salary in ViewBag.salaries)
+        {
+            <tr>
+                <td>@salary.Year.Name</td>
+                <td>@salary.Month.Name</td>
+                <td>@salary.Total</td>
+                <td>@salary.Paid</td>
+                <td>@salary.Unpaid</td>
+            </tr>
+        }
+    </table>
+}

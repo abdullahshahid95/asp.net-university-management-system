@@ -1,0 +1,45 @@
+﻿@model IEnumerable<UMS.Models.Department>
+@{
+    ViewBag.Title = "Departments";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<br />
+@Html.ActionLink("Add Department", "New", "Departments", new { @class = "btn btn-primary", @style = "float:right" })
+
+<h2>Departments</h2>
+<table id="students" class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Short Name</th>
+            <th>Building</th>
+            <th>Edit</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var department in Model)
+        {
+            <tr>
+                <td>@Html.ActionLink(department.Name, "Details", "Departments", new { id = department.Id }, null)</td>
+                <td>@department.ShortName</td>
+                <td>@department.Building</td>
+                <td>@Html.ActionLink("Edit", "Edit", "Departments", new { id = department.Id }, null)</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+            $('#students').DataTable();
+        });
+    </script>
+
+    @*<script type="text/javascript" charset="utf-8" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.js">
+    </script>*@
+}

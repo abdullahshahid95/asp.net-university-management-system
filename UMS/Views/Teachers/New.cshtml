@@ -1,0 +1,129 @@
+﻿@model UMS.Models.Teacher
+@{
+    ViewBag.Title = "Add Teacher";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@if (ViewBag.flag == 1)
+{
+    <button id="deleteT" class="btn btn-danger" data-teacher-id=@Model.Id style="float:right; margin-top:2px">Delete Teacher</button><br /><br />
+
+    @Html.ActionLink("Add Salary", "New", "Salaries", new { id = Model.Id }, new { @class = "btn btn-primary", @style = "float: right" })<br /><br />
+    foreach (var salary in ViewBag.salary)
+    {
+        string str = "Edit Salary for " + salary.Month.Name + " " + salary.Year.Name;
+        @Html.ActionLink(str, "Edit", "Salaries", new { id = salary.Id }, new { @class = "btn btn-default", @style = "float: right" });<br /><br />
+    }
+}
+@{
+    var heading = ViewBag.flag == 1 ? "Edit Teacher" : "Add Teacher";
+}
+<h2>@heading</h2>
+
+@using (Html.BeginForm("Save", "Teachers", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    if (ViewBag.flag == 1)
+    {
+        <img src="~/Photos/@Model.Picture" style="width:150px; height:200px" /><br />
+        <br />
+    }
+    else
+    {
+        <div class="form-group">
+            @Html.LabelFor(m => m.Picture)
+            <input type="file" name="test" required style="display:inline-block" />
+            @Html.ValidationMessageFor(m => m.Picture)
+        </div>
+    }
+
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Name)
+        @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Name)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Qualification)
+        @Html.TextBoxFor(m => m.Qualification, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Qualification)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.DesignationId)
+        @Html.DropDownListFor(m => m.DesignationId, new SelectList(ViewBag.designations, "Id", "Name"), "Select Designation", new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.DesignationId)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Gender)<strong>: </strong>
+        @Html.RadioButtonFor(m => m.Gender, "Male") Male
+        @Html.RadioButtonFor(m => m.Gender, "Female")Female
+        @Html.ValidationMessageFor(m => m.Gender)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Mobile)
+        @Html.TextBoxFor(m => m.Mobile, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Mobile)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Address)
+        @Html.TextAreaFor(m => m.Address, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Address)
+    </div>
+
+    @Html.HiddenFor(m => m.DateAdded, new { @Value = DateTime.Now })
+    @Html.HiddenFor(m => m.Id)
+
+    if (ViewBag.flag == 1)
+    {
+        <button type="submit" class="btn btn-primary">Save</button>
+    }
+    else
+    {
+        <button type="submit" class="btn btn-primary">Next</button>
+    }
+
+
+}
+
+@section scripts
+{
+
+    <script>
+        $(document).ready(function () {
+            $("#deleteT").on("click", function () {
+                var button = $(this);
+                console.log("Hello world2");
+                bootbox.confirm("Teacher will be permanantly deleted from database. Continue?", function (result) {
+                    if (result) {
+                        window.location.href = "/Teachers/Delete/" + button.attr("data-teacher-id");
+                    }
+                });
+            });
+        });
+    </script>
+
+
+
+
+
+
+
+    @*@if (Model.Flag == 1)
+        {
+        <script>
+            function confirmMessage() {
+                if (confirm("Delete the student permanently?")) {
+                    window.location.href = "/Students/Delete/" + @Model.Student.Id;
+                }
+                else {
+                    console.log("not deleted");
+                }
+                //window.confirm("Hello world");
+            }
+        </script>
+        }*@
+
+    @Scripts.Render("~/bundles/jqueryval");
+}
+
+
+
+

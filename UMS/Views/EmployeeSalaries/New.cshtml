@@ -1,0 +1,38 @@
+﻿@model UMS.Models.EmployeeSalary
+@{
+    ViewBag.Title = "Employee's Salary";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Add Salary</h2>
+@using (Html.BeginForm("Save", "EmployeeSalaries"))
+{
+    <div class="form-group">
+        @Html.LabelFor(m => m.Total)
+        @Html.TextBoxFor(m => m.Total, new { @Value = ViewBag.lastSalary, @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Total)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Paid)
+        @Html.TextBoxFor(m => m.Paid, new { @Value = 0, @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Paid)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.MonthId)
+        @Html.DropDownListFor(m => m.MonthId, new SelectList(ViewBag.months, "Id", "Name"), "Select Month", new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.MonthId)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.YearId)
+        @Html.DropDownListFor(m => m.YearId, new SelectList(ViewBag.years, "Id", "Name"), "Select Year", new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.YearId)
+    </div>
+
+    @Html.HiddenFor(m => m.EmployeeId, new { @Value = ViewBag.employeeId })
+    @Html.HiddenFor(m => m.PaymentDate, new { @Value = DateTime.Now })
+    @Html.HiddenFor(m => m.Id, new { @Value = ViewBag.employeeSalaryId })
+
+    <button type="submit" class="btn btn-primary">Save</button>
+
+}
+

@@ -1,0 +1,74 @@
+﻿@model UMS.Models.Course
+@{
+    ViewBag.Title = "Add Course";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@if (ViewBag.flag == 1)
+{
+    <br />
+    <button id="deleteS" class="btn btn-danger" data-course-id=@Model.Id style="float:right">Delete Course</button>
+    //@Html.ActionLink("Delete Student", "Delete", "Students", new { Id = Model.Student.Id }, new { @class = "btn btn-primary", @style = "float:right; margin-top:2px"})
+}
+
+<h2>Add Course</h2>
+@using (Html.BeginForm("Save", "Courses"))
+{
+    <div class="form-group">
+        @Html.LabelFor(m => m.DepartmentId)
+        @Html.DropDownListFor(m => m.DepartmentId, new SelectList(ViewBag.departments, "Id", "Name"), "Select Department", new { @class = "form-control"})
+        @Html.ValidationMessageFor(m => m.DepartmentId)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.SemesterId)
+        @Html.DropDownListFor(m => m.SemesterId, new SelectList(ViewBag.semesters, "Id", "Name"), "Select Semester", new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.SemesterId)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Name)
+        @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Name)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Code)
+        @Html.TextBoxFor(m => m.Code, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Code)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.LabHours)
+        @Html.TextBoxFor(m => m.LabHours, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.LabHours)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.TheoryHours)
+        @Html.TextBoxFor(m => m.TheoryHours, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.TheoryHours)
+    </div>
+    @Html.HiddenFor(m => m.Id)
+    <button type="submit" class="btn btn-primary">Save</button>
+
+}
+
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+            $("#deleteS").on("click", function () {
+                var button = $(this);
+                console.log("Hello world2");
+                bootbox.confirm("Department will be permanantly deleted from database. Continue?", function (result) {
+                    if (result) {
+                        window.location.href = "/Courses/Delete/" + button.attr("data-course-id");
+                    }
+                });
+            });
+        });
+    </script>
+
+    @Scripts.Render("~/bundles/jqueryval");
+}
+
+
+
+
+

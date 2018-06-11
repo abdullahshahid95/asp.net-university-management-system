@@ -1,0 +1,31 @@
+﻿@model UMS.Models.Fee
+@{
+    ViewBag.Title = "Semester And Fee";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Semester And Fee</h2>
+@using (Html.BeginForm("Save", "StudentSemester"))
+{
+    <div class="form-group">
+        @Html.LabelFor(m => m.SemesterId)
+        @Html.DropDownListFor(m => m.SemesterId, new SelectList(ViewBag.semesters, "Id", "Name"), "Select Semester", new {@Value=ViewBag.semesterId , @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.SemesterId)
+    </div>
+    <h3>Fees</h3>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Total)
+        @Html.TextBoxFor(m => m.Total, new { @Value = ViewBag.total, @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Total)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Paid)
+        @Html.TextBoxFor(m => m.Paid, new { @Value = ViewBag.paid, @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Paid)
+    </div>
+    @Html.HiddenFor(m => m.StudentId, new { @Value = ViewBag.studentid })
+    @Html.HiddenFor(m => m.Id, new { @Value = ViewBag.feeId })
+    <button type="submit" class="btn btn-primary">Save</button>
+}
+
+

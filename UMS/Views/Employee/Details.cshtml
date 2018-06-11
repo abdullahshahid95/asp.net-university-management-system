@@ -1,0 +1,45 @@
+﻿@model UMS.Models.Employee
+@{
+    ViewBag.Title = "Employee";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<br />
+@Html.ActionLink("Go Back", "Index", "Employee", null, new { @class = "btn btn-primary" })
+<h2>Employee Details</h2>
+<img src="~/Photos/@Model.Picture" style="width:150px; height:200px" /><br />
+<table class="table table-bordered table-hover">
+    <tr><th>Name</th><td>@Model.Name</td></tr>
+    <tr><th>Designation</th><td>@ViewBag.designation.Name</td></tr>
+    <tr><th>Qualification</th><td>@Model.Qualification</td></tr>
+    <tr><th>Gender</th><td>@Model.Gender</td></tr>
+    <tr><th>Mobile</th><td>@Model.Mobile</td></tr>
+    <tr><th>Address</th><td>@Model.Address</td></tr>
+</table>
+
+@if (!((IEnumerable<dynamic>)ViewBag.salaries).Any())
+{
+    <text>No salary record</text>
+}
+else
+{
+    <h2>Salary List</h2>
+    <table class="table table-bordered table-hover">
+        <tr>
+            <th>Year</th>
+            <th>Month</th>
+            <th>Total</th>
+            <th>Paid</th>
+            <th>Unpaid</th>
+        </tr>
+        @foreach (var salary in ViewBag.salaries)
+        {
+            <tr>
+                <td>@salary.Year.Name</td>
+                <td>@salary.Month.Name</td>
+                <td>@salary.Total</td>
+                <td>@salary.Paid</td>
+                <td>@salary.Unpaid</td>
+            </tr>
+        }
+    </table>
+}

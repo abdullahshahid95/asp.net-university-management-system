@@ -1,0 +1,72 @@
+﻿@model IEnumerable<UMS.Models.Course>
+@{
+    ViewBag.Title = "Courses";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<br />
+@Html.ActionLink("Add Course", "New", "Courses", new { @class = "btn btn-primary", @style = "float:right" })
+<h2>Courses</h2>
+
+<table id="courses" class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Code</th>
+            <th>Lab Hours</th>
+            <th>Theory Hours</th>
+            <th>Semester</th>
+            <th>Department</th>
+            <th>Edit</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var course in Model)
+        {
+            <tr>
+                <td>
+                    @{
+                        if (course.Name.Contains("_Lab"))
+                        {
+                            int index = course.Name.IndexOf("_Lab");
+                            var n = course.Name.Remove(index+4);
+                            <text>@n</text>
+                        }
+                        else
+                        {
+                            <text>@course.Name</text>
+                        }
+                    }
+                </td>
+                <td>@course.Department.ShortName - @course.Code</td>
+                <td>@course.LabHours</td>
+                <td>@course.TheoryHours</td>
+                <td>@course.Semester.Name</td>
+                <td>@course.Department.Name</td>
+                <td>
+                    @{
+                        if (!course.Name.Contains("_Lab"))
+                        {
+                            @Html.ActionLink("Edit", "Edit", "Courses", new { id = course.Id }, null);
+                        }
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+@section scripts
+{
+    <script>
+        var table = $(document).ready(function () {
+            $('#courses').DataTable({
+                "bSort": false
+            });
+        });
+    </script>
+
+    @*<script type="text/javascript" charset="utf-8" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.js">
+    </script>*@
+}
+

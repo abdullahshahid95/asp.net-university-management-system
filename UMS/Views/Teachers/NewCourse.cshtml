@@ -1,0 +1,400 @@
+﻿@model dynamic
+@{
+    ViewBag.Title = "Assign Course";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@{ 
+    UMS.Dtos.DesignationDto d = new UMS.Dtos.DesignationDto();
+    var list = d.designationList;
+
+    UMS.Dtos.Day Days = new UMS.Dtos.Day();
+    var days = Days.days;
+
+    UMS.Dtos.Time t = new UMS.Dtos.Time();
+    var hours = t.Hours;
+    var minutes = t.Minutes;
+    var ampms = t.AMPM;
+}
+<h2>Assign Course</h2>
+<form id="newCourse">
+    <div class="form-group">
+        <label>Teacher</label>
+        <input type="text" id="teacher" readonly required class="form-control"/>
+    </div>
+    <div class="form-group">
+        <label>Section</label>
+        <input type="text" id="section" required class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>Day</label>
+        <select id="day" required class="form-control"  >
+            @foreach (var day in days)
+            {
+                <option value=@day.Id>@day.Name</option>
+            }
+        </select>
+    </div>
+    <div class="form-group">
+        <label>Room</label>
+        <input type="text" id="room" required class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>Time</label>
+        <select id="shour" required>
+            @foreach (var hour in hours)
+            {
+                <option value=@hour.Hour>@hour.Hour</option>
+            }
+        </select>
+        <strong>:</strong>
+        <select id="sminute" required>
+            @foreach (var minute in minutes)
+            {
+                <option value=@minute.Minute>@minute.Minute</option>
+            }
+        </select>
+        <select id="sampm" required>
+            @foreach (var ampm in ampms)
+            {
+                <option value=@ampm.AmPm>@ampm.AmPm</option>
+            }
+        </select>
+        to 
+        <select id="ehour" required>
+            @foreach (var hour in hours)
+            {
+                <option value=@hour.Hour>@hour.Hour</option>
+            }
+        </select>
+        <strong>:</strong>
+        <select id="eminute" required>
+            @foreach (var minute in minutes)
+            {
+                <option value=@minute.Minute>@minute.Minute</option>
+            }
+        </select>
+        <select id="eampm" required>
+            @foreach (var ampm in ampms)
+            {
+                <option value=@ampm.AmPm>@ampm.AmPm</option>
+            }
+        </select>
+    </div>
+
+        <div class="row">
+            <div class="col-md-4 col-sm-4">
+                <strong>Courses</strong>
+                <ul id="nCourses" class="list-group"></ul>
+            </div>
+        </div>
+    <button id="btnSubmit" class="btn btn-primary">Submit</button>
+</form>
+<div id="tablesContainer" style="float:right; margin-top:-190px;">
+    <h3>Select Teacher</h3>
+    <table id="teachers" class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Designation</th>
+                <th>Qualification</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var teacher in ViewBag.teachers)
+            {
+                <tr class="jsTeacher" data-teacher-id =@teacher.Id data-teacher-name='@teacher.Name'>
+                    <td>@teacher.Name</td>
+                    <td>@list.SingleOrDefault(c => c.Id == teacher.DesignationId).Name</td>
+                    <td>@teacher.Qualification</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <br /><br />
+    <h3>Select Courses</h3>
+    <table id="courses" class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Semester</th>
+                <th>Code</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var course in ViewBag.courses)
+            {
+                <tr class="jsCourse" data-course-id=@course.Id data-course-name='@course.Name'>
+                    <td>
+                        @{
+                            if (course.Name.Contains("_Lab"))
+                            {
+                                int index = course.Name.IndexOf("_Lab");
+                                var n = course.Name.Remove(index + 4);
+                                <text>@n</text>
+                            }
+                            else
+                            {
+                                <text>@course.Name</text>
+                            }
+                        }
+                    </td>
+                    <td>@course.Semester.Name</td>
+                    <td>@course.Department.ShortName - @course.Code</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    @*<h3>Labs</h3>*@
+    @*<table id="labs" class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th>Course</th>
+                <th>Hours</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var lab in ViewBag.labs)
+            {
+                <tr class="jsLab" data-lab-id=@lab.Id data-lab-name='@lab.Course.Name'>
+                    <td>@lab.Course.Name</td>
+                    <td>@lab.Course.LabHours</td>
+                </tr>
+            }
+        </tbody>
+    </table>*@
+</div>
+
+@section scripts
+{
+    <script>
+        var table = $(document).ready(function () {
+            $('#courses').DataTable({
+                "bSort": false
+            });
+
+            $('#teachers').DataTable({
+                "bSort": false
+            });
+            
+            $("#labs").DataTable({
+                "bSort": false
+            });
+
+            var vm = {
+                courseIds: [],
+                sections: [],
+                dayIds: [],
+                rooms: [],
+                shours: [],
+                sminutes: [],
+                sampms: [],
+                ehours: [],
+                eminutes: [],
+                eampms: []
+            }
+            var tempvm = {
+                courseIds: [],
+                sections: [],
+                dayIds: [],
+                rooms: [],
+                shours: [],
+                sminutes: [],
+                sampms: [],
+                ehours: [],
+                eminutes: [],
+                eampms: []
+            }
+
+            $("#teachers").on("click", ".jsTeacher", function () {
+                $("#teacher").val($(this).attr("data-teacher-name"));
+                vm.teacherId = $(this).attr("data-teacher-id");
+                tempvm.teacherId = $(this).attr("data-teacher-id");
+                console.log(vm.teacherId);
+            });
+            $("#section").on("change paste keyup", function () {
+                if (vm.teacherId == null) {
+                    alert("Select a teacher first.");
+                    $(this).val(null);
+                }
+            });
+            $("#courses").on("click", ".jsCourse", function () {
+                var resflag = 0;
+                var coursel = $(this);
+                if ( $("#section").val().length < 1 ) {
+                    alert("Enter section.")
+                }
+                else if ($("#room").val().length < 1) {
+                    alert("Enter Room.")
+                }
+                else {
+                    var flag = 0;
+                    for (var i = 0; i < vm.courseIds.length; i++) {
+                        if (vm.courseIds[i] == $(this).attr("data-course-id") && vm.sections[i] == $("#section").val() && vm.dayIds[i] == $("#day").val() && vm.rooms[i] == $("#room").val() && vm.shours[i] == $("#shour").val() && vm.sminutes[i] == $("#sminute").val() && vm.sampms[i] == $("#sampm").val() && vm.ehours[i] == $("#ehour").val() && vm.eminutes[i] == $("#eminute").val() && vm.eampms[i] == $("#eampm").val()) {
+                            alert("Course already selected.");
+                            flag = 1;
+                            break;
+                        }
+                    }
+
+                    if (flag == 0) {
+                        //
+                        tempvm.sections.splice(0, tempvm.sections.length);
+                        tempvm.courseIds.splice(0, tempvm.courseIds.length);
+                        tempvm.dayIds.splice(0, tempvm.dayIds.length);
+                        tempvm.rooms.splice(0, tempvm.rooms.length);
+                        tempvm.shours.splice(0, tempvm.shours.length);
+                        tempvm.sminutes.splice(0, tempvm.sminutes.length);
+                        tempvm.sampms.splice(0, tempvm.sampms.length);
+                        tempvm.ehours.splice(0, tempvm.ehours.length);
+                        tempvm.eminutes.splice(0, tempvm.eminutes.length);
+                        tempvm.eampms.splice(0, tempvm.eampms.length);
+
+                        tempvm.sections.push($("#section").val().toString());
+                        tempvm.courseIds.push($(this).attr("data-course-id"));
+                        tempvm.dayIds.push($("#day").val());
+                        tempvm.rooms.push($("#room").val().toString());
+                        tempvm.shours.push($("#shour").val());
+                        tempvm.sminutes.push($("#sminute").val());
+                        tempvm.sampms.push($("#sampm").val());
+                        tempvm.ehours.push($("#ehour").val());
+                        tempvm.eminutes.push($("#eminute").val());
+                        tempvm.eampms.push($("#eampm").val());
+                        tempvm.flag = 1.5;
+
+                        console.log(tempvm);
+                        $.ajax({
+                            url: "/api/NewTeacherCourse",
+                            method: "post",
+                            data: tempvm
+                        })
+                        .done(function (response) {
+                            resflag = response;
+                            console.log(resflag);
+                            if (resflag == 2) {
+                                var sectionName = $("#section").val().toString();
+                                vm.sections.push(sectionName);
+                                var courseId = $(coursel).attr("data-course-id");
+                                vm.courseIds.push(courseId);
+                                var dayId = $("#day").val();
+                                vm.dayIds.push(dayId);
+                                var room = $("#room").val().toString();
+                                vm.rooms.push(room);
+                                var shour = $("#shour").val();
+                                vm.shours.push(shour);
+                                var sminute = $("#sminute").val();
+                                vm.sminutes.push(sminute);
+                                var sampm = $("#sampm").val();
+                                vm.sampms.push(sampm);
+                                var ehour = $("#ehour").val();
+                                vm.ehours.push(ehour);
+                                var eminute = $("#eminute").val();
+                                vm.eminutes.push(eminute);
+                                var eampm = $("#eampm").val();
+                                vm.eampms.push(eampm);
+                                $("#nCourses").append("<li class='list-group-item' data-course-lId = " + courseId + " data-course-section = " + sectionName + " data-course-dayId = " + dayId + " data-course-room = " + room + " data-course-shour = " + shour + " data-course-sminute = " + sminute + " data-course-sampm = " + sampm + " data-course-ehour = " + ehour + " data-course-eminute = " + eminute + " data-course-eampm = " + eampm + ">" + $(coursel).attr("data-course-name") + "</li>");
+                            }
+                            else if (resflag == 1) {
+                                alert("Record already exists");
+                            }
+                            else {
+                                alert(response);
+                            }
+                        })
+
+                        .fail(function () {
+                            console.log("not done");
+                        });
+                        
+                        //
+                        @*if (resflag == 2) {
+                            var sectionName = $("#section").val().toString();
+                            vm.sections.push(sectionName);
+                            var courseId = $(this).attr("data-course-id");
+                            vm.courseIds.push(courseId);
+                            $("#nCourses").append("<li class='list-group-item' data-course-lId = " + courseId + " data-course-section = " + sectionName + ">" + $(this).attr("data-course-name") + "</li>");
+                        }
+                        else if(resflag == 1) {
+                            alert("Record already exists");
+                        }*@
+                    }
+                    console.log(vm);
+                }
+                });
+            $("#nCourses").on("click", ".list-group-item", function () {
+                var item = $(this);
+                
+                //var courseIndex = vm.courseIds.indexOf($(this).attr("data-course-lId"));
+                //var sectionIndex = vm.sections.indexOf($(this).attr("data-course-section"));
+                //vm.courseIds.splice(courseIndex, 1);
+                //vm.sections.splice(sectionIndex, 1);
+                for (var i = 0; i < vm.courseIds.length; i++) {
+                    if (vm.courseIds[i] == $(item).attr("data-course-lId") && vm.sections[i] == $(item).attr("data-course-section") && vm.dayIds[i] == $(item).attr("data-course-dayId") && vm.rooms[i] == $(item).attr("data-course-room") && vm.shours[i] == $(item).attr("data-course-shour") && vm.sminutes[i] == $(item).attr("data-course-sminute") && vm.sampms[i] == $(item).attr("data-course-sampm") && vm.ehours[i] == $(item).attr("data-course-ehour") && vm.eminutes[i] == $(item).attr("data-course-eminute") && vm.eampms[i] == $(item).attr("data-course-eampm")) {
+                        vm.courseIds.splice(i, 1);
+                        vm.sections.splice(i, 1);
+                        vm.rooms.splice(i, 1);
+                        vm.dayIds.splice(i, 1);
+                        vm.shours.splice(i, 1);
+                        vm.sminutes.splice(i, 1);
+                        vm.sampms.splice(i, 1);
+                        vm.ehours.splice(i, 1);
+                        vm.eminutes.splice(i, 1);
+                        vm.eampms.splice(i, 1);
+                        $(this).remove();
+
+                        console.log("hellodelete");
+                        console.log(vm);
+                        break;
+                    }
+                    else {
+                        console.log("else block i = " + i);
+                    }
+                }
+                
+            });
+            //Checking for labs
+            
+            //End
+
+            $("#btnSubmit").on("click", function () {
+                if (vm.teacherId == null) {
+                    alert("Select a teacher");
+                }
+                if (vm.courseIds.length < 1) {
+                    alert("Select atleast one course.");
+                }
+            });
+            
+            //if (vm.teacherId != null && vm.courseIds.length > 0 && vm.section != null) {
+                console.log("falana");
+                $("#newCourse").submit(function (e) {
+                    e.preventDefault();
+                    if( vm.teacherId != null && vm.courseIds.length > 0 )
+                        {
+                        $.ajax({
+                            url: "/api/NewTeacherCourse",
+                            method: "post",
+                            data: vm
+                        })
+                        .done(function () {
+                            console.log("done");
+                            alert("Record added");
+                            window.location.href = "/Teachers/NewCourse";
+                        })
+
+                        .fail(function () {
+                            console.log("not done");
+                        });
+                    }
+                    else {
+                        alert("Enter given fields.");
+                    }
+                });
+            //}
+
+        });
+
+    </script>
+
+    @*<script type="text/javascript" charset="utf-8" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.js">
+    </script>*@
+}
